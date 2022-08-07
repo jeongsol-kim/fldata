@@ -17,20 +17,19 @@ def register_dataset(name: str) -> None:
     return wrapper
 
 
-# TODO: generalize to other type of datasets including audio, video.    
-def get_dataset(name: str) -> VisionDataset:
+def get_dataset(name: str):
     if not __DATASET__.get(name, None):
         raise NameError(f"Name {name} is not defined.")
     return __DATASET__[name]
 
 
-# Centralized datasets
-@register_dataset(name='base')
-class CentralizedDataset(VisionDataset):
+@register_dataset(name='custom_vision')
+class CustomVisionDataset(VisionDataset):
     def __init__(self, root: str):
-        super().__init__(root=root)
-    
+        super().__init__(root)
 
+
+# Vision Dataset
 @register_dataset(name='mnist')
 class CentralizedMNISTDataset(datasets.MNIST):
     def __init__(self, root: str, train: bool):
