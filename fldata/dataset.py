@@ -1,8 +1,6 @@
 '''
 Define basic/custom torch dataset.
 '''
-import numpy as np
-from functools import partial
 from torchvision import datasets
 from torchvision.datasets import VisionDataset
 
@@ -25,22 +23,28 @@ def get_dataset(name: str) -> VisionDataset:
         raise NameError(f"Name {name} is not defined.")
     return __DATASET__[name]
 
-# TODO: generalize to other type of datasets includign audio, video
-def load_data(name: str) -> np.ndarray:
-    dataset = get_dataset(name)
-    
-    return dataset.images, dataset.labels
-
-
 
 # Centralized datasets
-@register_dataset(name='centre_base')
+@register_dataset(name='base')
 class CentralizedDataset(VisionDataset):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, root: str):
+        super().__init__(root=root)
     
 
-@register_dataset(name='centre_mnist')
+@register_dataset(name='mnist')
 class CentralizedMNISTDataset(datasets.MNIST):
-    def __init__(self, root):
-        super().__init__(root, download=True)
+    def __init__(self, root: str, train: bool):
+        super().__init__(root=root, train=train, download=True)
+
+@register_dataset(name='fmnist')
+class CentralizedFMNISTDataset(datasets.FashionMNIST):
+    def __init__(self, root: str, train: bool):
+        super().__init__(root=root, train=train, download=True)
+
+@register_dataset(name='cifar10')
+class CentralizedCIFAR10Dataset(datasets.CIFAR10):
+    def __init__(self, root: str, train: bool):
+        super().__init__(root=root, train=train, download=True)
+         
+
+
